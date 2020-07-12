@@ -22,7 +22,7 @@ class Header extends React.Component{
     }
     handleSubmit=(event)=>{
         this.toggleModal();
-        alert("name:"+this.username.value+"password:"+this.password.value+"remember:"+this.remember.value);
+        alert("name:"+this.username.value+"password:"+this.password.value+"remember:"+this.re)
         event.preventDefault();
     }
    render(){
