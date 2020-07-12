@@ -2,6 +2,11 @@ import React from 'react';
 import {Breadcrumb,BreadcrumbItem,Button, Label, Col,Row} from 'reactstrap';
 import { Link } from 'react-router-dom';
 import {Control,LocalForm,Errors} from 'react-redux-form';
+const required = (val) => val && val.length;
+const maxLength = (len) => (val) =>  !(val) || (val.length <= len);
+const minLength = (len) => (val) => val && (val.length >= len);
+const isNumber = (val) => !isNaN(Number(val));
+const validEmail = (val) => /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(val);    
 class Contactus extends React.Component{
     constructor(props) {
         super(props);
@@ -9,9 +14,10 @@ class Contactus extends React.Component{
     handleSubmit=(values)=>{
           alert(JSON.stringify(values));
     }
-   
+    
     render(){
-        return(          
+        return(    
+  
             <div className='container'>
                     <div className="row">
                       <Breadcrumb>
@@ -61,7 +67,20 @@ class Contactus extends React.Component{
                                 id="firstname" 
                                 name="firstname" 
                                 className="form-control"
+                                validators={{
+                                    required, minLength: minLength(3), maxLength: maxLength(15)
+                                }}
                                 ></Control.text>
+                                <Errors
+                                        className="text-danger"
+                                        model=".firstname"
+                                        show="touched"
+                                        messages={{
+                                            required: 'Required',
+                                            minLength: 'Must be greater than 2 characters',
+                                            maxLength: 'Must be 15 characters or less'
+                                        }}
+                                     />
                                 </Col>
                                 
                             </Row>
@@ -75,7 +94,20 @@ class Contactus extends React.Component{
                                 className="form-control"
                                 name="lastname" 
                                 placeholder="Last Name"
+                                validators={{
+                                    required, minLength: minLength(3), maxLength: maxLength(15)
+                                }}
                                 ></Control.text>
+                                 <Errors
+                                        className="text-danger"
+                                        model=".lastname"
+                                        show="touched"
+                                        messages={{
+                                            required: 'Required',
+                                            minLength: 'Must be greater than 2 characters',
+                                            maxLength: 'Must be 15 characters or less'
+                                        }}
+                                     />
                                 </Col>  
                             </Row>
                             <Row className="form-group mt-3">
@@ -88,7 +120,21 @@ class Contactus extends React.Component{
                                 className="form-control"
                                 placeholder="Telephone Number"
                                 name="telnum" 
+                                validators={{
+                                    required, minLength: minLength(3), maxLength: maxLength(15), isNumber
+                                }}
                                 ></Control.text>
+                                <Errors
+                                        className="text-danger"
+                                        model=".telnum"
+                                        show="touched"
+                                        messages={{
+                                            required: 'Required',
+                                            minLength: 'Must be greater than 2 numbers',
+                                            maxLength: 'Must be 15 numbers or less',
+                                            isNumber: 'Must be a number'
+                                        }}
+                                     />
                                 </Col>
                                 
                             </Row>
@@ -103,7 +149,19 @@ class Contactus extends React.Component{
                                  name="email" 
                                  className="form-control"
                                  model=".email"
+                                 validators={{
+                                    required, validEmail
+                                }}
                                  ></Control.text>
+                                 <Errors
+                                        className="text-danger"
+                                        model=".email"
+                                        show="touched"
+                                        messages={{
+                                            required: 'Required',
+                                            validEmail: 'Invalid Email Address'
+                                        }}
+                                     />
                                 </Col>
                             </Row>
                             <Row className="form-group mt-3">
