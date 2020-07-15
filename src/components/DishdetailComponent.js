@@ -15,7 +15,7 @@ class CommentForm extends React.Component {
         this.setState({isModalOpen:!this.state.isModalOpen});
     }
     handleSubmit=(values)=>{
-       this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+       this.props.postComment(this.props.dishId, values.rating, values.author, values.comment);
     }
     render() {
         return (
@@ -161,7 +161,7 @@ class CommentForm extends React.Component {
                 <div className="col-12 col-md-5 m-1">
                 <h4><strong>Comments</strong></h4>
                     {<RenderComments comments={props.comments} />}
-                    {<CommentForm dishId={props.dish.id} addComment={props.addComment}/>}
+                    {<CommentForm dishId={props.dish.id} postComment={props.postComment}/>}
                 </div>
                 </div>
             </div>
