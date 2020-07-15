@@ -2,6 +2,9 @@ import React from 'react';
 import { Card, CardImg, CardBody, CardTitle, CardText,Breadcrumb,BreadcrumbItem,Button,Modal,ModalHeader,ModalBody, Label,Row} from 'reactstrap';
 import {Link} from 'react-router-dom';
 import {LocalForm,Control,Errors} from 'react-redux-form';
+import { addComment } from '../redux/ActionCreaters';
+import  Loading  from './LoadingComponent';
+
 const maxLength = (len) => (val) =>  !(val) || (val.length <= len);
 const minLength = (len) => (val) => val && (val.length >= len);
 class CommentForm extends React.Component {
@@ -12,7 +15,7 @@ class CommentForm extends React.Component {
         this.setState({isModalOpen:!this.state.isModalOpen});
     }
     handleSubmit=(values)=>{
-        alert(JSON.stringify(values));
+       this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
     }
     render() {
         return (
@@ -77,7 +80,7 @@ class CommentForm extends React.Component {
     };
 };
     function RenderDish({dish}) {
-        if (dish != null) {
+         if (dish != null) {
             return (
                 <Card>
                     <CardImg width="100%" src={dish.image} alt={dish.name}/>
@@ -120,6 +123,25 @@ class CommentForm extends React.Component {
         }
     }
     const DishDetail=(props)=> {
+        if (props.isLoading) {
+            return(
+                <div className="container">
+                    <div className="row">            
+                        <Loading />
+                    </div>
+                </div>
+            );
+        }
+        else if (props.errMess) {
+            return(
+                <div className="container">
+                    <div className="row">            
+                        <h4>{props.errMess}</h4>
+                    </div>
+                </div>
+            );
+        }
+        else
         return (
             <div className="container">
                 <div className="row">
@@ -139,7 +161,7 @@ class CommentForm extends React.Component {
                 <div className="col-12 col-md-5 m-1">
                 <h4><strong>Comments</strong></h4>
                     {<RenderComments comments={props.comments} />}
-                    {<CommentForm />}
+                    {<CommentForm dishId={props.dish.id} addComment={props.addComment}/>}
                 </div>
                 </div>
             </div>
